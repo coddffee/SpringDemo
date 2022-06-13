@@ -1,13 +1,12 @@
-package com.coddffee;
+package com.coddffee.xmlbeans;
 
-import com.coddffee.beans.Employee;
-import com.coddffee.beans.Group;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/********** 基于XML的配置 **********/
 public class Test {
 
-    private final String path = "classpath:com/coddffee/beans/";
+    private final String path = "classpath:com/coddffee/xmlbeans/";
 
     public Test() {
         super();

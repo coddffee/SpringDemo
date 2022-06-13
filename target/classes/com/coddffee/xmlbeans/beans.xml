@@ -11,6 +11,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--
+    注解配置与XML配置的优缺点：
+    注解配置更加简单方便，但会入侵POJO源码。
+    XML配置比较繁琐，但不会触及POJO源代码。
+    -->
+
     <!-- **********bean的作用域(scope属性)********** -->
     <!--
     singleton : 单例模式，默认值
@@ -31,21 +37,21 @@
 
     <!-- 构造器方式实例化 -->
     <!-- bean为配置id或name时，使用全类名作为bean的name -->
-    <bean id="employee1" class="com.coddffee.beans.Employee">
+    <bean id="employee1" class="com.coddffee.xmlbeans.Employee">
         <property name="id" value="1"/>
         <!-- setter注入，调用属性的set方法 -->
         <property name="name" value="Tony"/>
         <!-- 引用bean的id进行注入 -->
         <property name="group" ref="group1"/>
     </bean>
-    <bean id="group1" class="com.coddffee.beans.Group">
+    <bean id="group1" class="com.coddffee.xmlbeans.Group">
         <property name="name" value="development"/>
     </bean>
 
     <!-- 静态工厂实例化bean -->
-    <bean id="employee2" class="com.coddffee.beans.Employee" factory-method="fake"/>
+    <bean id="employee2" class="com.coddffee.xmlbeans.Employee" factory-method="fake"/>
 
-    <bean id="exEmployee" class="com.coddffee.beans.Employee"/>
+    <bean id="exEmployee" class="com.coddffee.xmlbeans.Employee"/>
 
     <!-- 实例工厂实例化bean -->
     <bean id="dismissedEmployee" factory-bean="exEmployee" factory-method="afterDismissed"/>
@@ -60,7 +66,7 @@
     -->
 
     <!-- 构造器注入 -->
-    <bean id="employee3" class="com.coddffee.beans.Employee">
+    <bean id="employee3" class="com.coddffee.xmlbeans.Employee">
         <!--
         其它的构造器参数匹配方式：
         根据参数类型匹配：<constructor-arg type="java.lang.String" value="Sunny"/>
@@ -72,14 +78,14 @@
     </bean>
 
     <!-- 内部bean: 在bean的内部定义bean用于配置外部bean的属性 -->
-    <bean id="employee4" class="com.coddffee.beans.Employee">
+    <bean id="employee4" class="com.coddffee.xmlbeans.Employee">
         <property name="id" value="4"/>
         <property name="name" value="Tom"/>
         <property name="group">
-            <bean class="com.coddffee.beans.Group">
+            <bean class="com.coddffee.xmlbeans.Group">
                 <property name="name" value="Test"/>
                 <property name="department">
-                    <bean class="com.coddffee.beans.Department">
+                    <bean class="com.coddffee.xmlbeans.Department">
                         <property name="name" value="software"/>
                     </bean>
                 </property>
@@ -88,7 +94,7 @@
     </bean>
 
     <!-- 集合属性注入 -->
-    <bean id="group2" class="com.coddffee.beans.Group">
+    <bean id="group2" class="com.coddffee.xmlbeans.Group">
         <property name="name" value="development"/>
         <property name="employees">
             <!--
@@ -124,7 +130,7 @@
     p:propertyName="value" 等价于 <property name="propertyName" value="value"/>
     p:propertyName-ref="bean" 等价于 <property name="propertyName" ref="bean"/>
     -->
-    <bean id="employee5" class="com.coddffee.beans.Employee"
+    <bean id="employee5" class="com.coddffee.xmlbeans.Employee"
           p:id="5"
           p:name="Luis"
           p:group-ref="group1"/>
@@ -138,24 +144,24 @@
     c:_0="value" 等价于 <constructor-arg index="0" value="value"/>
     c:_1-ref="bean" 等价于 <constructor-arg index="1" ref="bean"/>
     -->
-    <bean id="employee6" class="com.coddffee.beans.Employee"
+    <bean id="employee6" class="com.coddffee.xmlbeans.Employee"
           c:id="6"
           c:name="Aux"
           c:group-ref="group2"/>
 
     <!-- 复合属性 -->
-    <bean id="group3" class="com.coddffee.beans.Group">
+    <bean id="group3" class="com.coddffee.xmlbeans.Group">
         <property name="name" value="planning"/>
         <!-- 构造器实例化bean -->
         <property name="department">
-            <bean class="com.coddffee.beans.Department"/>
+            <bean class="com.coddffee.xmlbeans.Department"/>
         </property>
         <!-- 复合属性，使用前提是目标属性已经被实例化 -->
         <property name="department.name" value="software"/>
     </bean>
 
     <!-- depends-on: 指定某个bean依赖于另一个bean -->
-    <bean id="employee7" class="com.coddffee.beans.Employee" depends-on="group3">
+    <bean id="employee7" class="com.coddffee.xmlbeans.Employee" depends-on="group3">
         <property name="id" value="7"/>
         <property name="name" value="Winter"/>
         <property name="group" ref="group3"/>
@@ -166,7 +172,7 @@
     默认情况下ApplicationContext启动时会立即初始化bean, 延迟初始化使得容器在bean被第一次请求时进行初始化
     在<beans>标签中设置default-lazy-init为true或false后，将影响其中所有设置lazy-init="default"的bean
     -->
-    <bean id="xxx" class="com.coddffee.beans.Employee" lazy-init="true"/>
+    <bean id="xxx" class="com.coddffee.xmlbeans.Employee" lazy-init="true"/>
 
     <!-- 自动装配 -->
     <!--
@@ -177,7 +183,7 @@
     default : 默认(no)
     -->
 
-    <bean id="department" class="com.coddffee.beans.Department">
+    <bean id="department" class="com.coddffee.xmlbeans.Department">
         <property name="name" value="marketing"/>
     </bean>
     <!-- 上面名为department的bean可与department属性自动装配 -->
@@ -185,10 +191,10 @@
     如果存在多个自动装配bean选择，可将非目标bean的autowire-candidate(自动装配候选)属性设置为false
     更好的选择是将目标候选bean的primary属性设置为true
      -->
-    <bean id="group4" class="com.coddffee.beans.Group" autowire="byName" primary="true">
+    <bean id="group4" class="com.coddffee.xmlbeans.Group" autowire="byName" primary="true">
         <property name="name" value="sales"/>
     </bean>
-    <bean id="employee8" class="com.coddffee.beans.Employee" autowire="byType">
+    <bean id="employee8" class="com.coddffee.xmlbeans.Employee" autowire="byType">
         <property name="id" value="8"/>
         <property name="name" value="Jarvis"/>
     </bean>

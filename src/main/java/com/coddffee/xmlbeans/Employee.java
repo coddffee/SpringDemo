@@ -1,4 +1,4 @@
-package com.coddffee.beans;
+package com.coddffee.xmlbeans;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;

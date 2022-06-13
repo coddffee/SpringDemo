@@ -1,4 +1,4 @@
-package com.coddffee.beans;
+package com.coddffee.annotationbeans;
 
 import java.util.List;
 

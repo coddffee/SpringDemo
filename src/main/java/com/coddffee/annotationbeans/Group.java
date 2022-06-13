@@ -1,4 +1,7 @@
-package com.coddffee.beans;
+package com.coddffee.annotationbeans;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -53,6 +56,14 @@ public class Group {
     @Override
     public String toString() {
         return "name:" + name + "," + "department:" + (department == null ? "none" :  department.getName()) + ".";
+    }
+
+    public void initialize() {
+        System.out.println("[Group] : I am initialized.");
+    }
+
+    public void destroy() {
+        System.out.println("[Group] : I am destroyed.");
     }
 
 }
